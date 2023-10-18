@@ -1,17 +1,16 @@
 package entity;
 
 import java.util.ArrayList;
-import java.util.List;
 
 class Cart {
-    private List<Product> products;
+    private entity.List<Product> products;
 
     public Cart() {
-        this.products = new ArrayList<>();
+        this.products = new Product<>();
     }
 
     public void addProduct(Product product) {
-        products.add(product);
+        products.insert(product);
     }
 
     public void removeProduct(Product product) {

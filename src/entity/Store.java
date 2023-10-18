@@ -16,7 +16,6 @@ public class Store {
         this.carts = new HashMap<>();
         this.lastOrderId = 0;
 
-        // Загрузка списка товаров из файла
         loadProductList();
     }
 

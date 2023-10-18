@@ -11,7 +11,6 @@ import java.util.List;
         }
 
         public void registerUser(User user) {
-
             userList.add(user);
         }
 
@@ -28,7 +27,6 @@ import java.util.List;
                 System.out.println("Ошибка при записи файла users.dat: " + e.getMessage());
 
             }
-
         }
 
         public void loadUserList() {
