@@ -139,7 +139,7 @@ public class Store {
 
     public void placeOrder(User user) {
         Cart cart = carts.get(user);
-        if (cart.getProducts().size() == 0) {
+        if (cart.getProducts().getSize() == 0) {
             System.out.println("Корзина пуста, заказ не может быть оформлен.");
             return;
         }

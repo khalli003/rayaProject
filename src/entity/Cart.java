@@ -21,7 +21,4 @@ class Cart {
         return products;
     }
 
-    public void clear() {
-        products.clear();
-    }
 }
