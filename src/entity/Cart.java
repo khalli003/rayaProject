@@ -1,12 +1,11 @@
 package entity;
 
-import java.util.ArrayList;
 
 class Cart {
     private entity.List<Product> products;
 
     public Cart() {
-        this.products = new Product<>();
+        this.products = getProducts();
     }
 
     public void addProduct(Product product) {

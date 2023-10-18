@@ -152,6 +152,5 @@ public class Store {
         lastOrderId++;
         System.out.println("Ваш заказ успешно оформлен под номером " + lastOrderId + ".");
         System.out.println("Сумма заказа: " + totalPrice);
-        cart.clear();
     }
 }
