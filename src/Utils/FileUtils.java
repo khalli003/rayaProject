@@ -1,62 +1,119 @@
 package Utils;
 
 import entity.List;
+import entity.Product;
+import entity.Store;
 import entity.User;
 
 import java.io.*;
 
 public class FileUtils {
 
-
-    public static <T> List<T> readFile(String fileName) {
-        try (FileInputStream fileIn = new FileInputStream(fileName); ObjectInputStream objectIn =
-                new ObjectInputStream(fileIn)) {
-            Object object = objectIn.readObject();
-            return (List<T>) object;
-
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException ex) {
-
-            var file = new File(fileName);
-            try {
-                boolean exists = file.exists();
-
-                if (!exists) {
-                    var newFile = file.createNewFile();
-
-                    if (!newFile) {
-                        System.out.println("Что-то пошло не так при создании файла");
-                        throw new RuntimeException("умер");
-                    } else {
-                        if (fileName.contains("users")) {
-                            var users = new List<User>(new User[10]);
-                            users.insert(new User(
-                                    "IRoman",
-                                    "qwerty"
-                            ));
-
-
-                            fileWriter(users, fileName);
-
-                            return readFile(fileName);
-                        }
-                    }
-                }
-
-            } catch (IOException exc) {
-                System.out.println(exc.getMessage());
-            }
-        }
-        return null;
+    static String[] getPartsOfLine(String line) {
+        return line.split(",");
     }
 
-    public static <T extends Serializable> void fileWriter (List<T> list, String fileName) {
-        try (FileOutputStream fileOut = new FileOutputStream(fileName);
-             ObjectOutputStream objectOut = new ObjectOutputStream(fileOut)) {
-            objectOut.writeObject(list);
+
+    public static void readUserFile(List<User> listUser, String fileName) {
+        FileReader fileReader = null;
+        BufferedReader bufferedReader = null;
+        try {
+            fileReader = new FileReader(fileName);
+            bufferedReader = new BufferedReader(fileReader);
+
+            bufferedReader.readLine();
+
+            String line;
+
+            while ((line = bufferedReader.readLine()) != null) {
+                String[] partsOfLine = getPartsOfLine(line);
+
+                User user = new User(partsOfLine[0], partsOfLine[1]);
+
+                listUser.insert(user);
+            }
+
+            bufferedReader.close();
+            fileReader.close();
+
         } catch (IOException e) {
-            e.printStackTrace();
+            try {
+                bufferedReader.close();
+                fileReader.close();
+            } catch (Exception er) {
+                System.out.println("Произошла ошибка");
+            }
+            throw new RuntimeException("Такой файл не найден");
+        }
+    }
+
+    public static void readProductFile() {
+        try (BufferedReader reader = new BufferedReader(new FileReader("src/productList.csv"))) {
+            String line;
+            boolean firstLine = true;
+
+
+            while ((line = reader.readLine()) != null) {
+                if (firstLine) {
+                    firstLine = false;
+                    continue;
+                }
+
+                String[] data = line.split(",");
+                if (data.length >= 3) { // Убедимся, что есть как минимум 3 элемента
+                    try {
+                        int id = Integer.parseInt(data[0]);
+                        String name = data[1];
+                        double price = Double.parseDouble(data[2]);
+                        Store.addProduct(new Product(id, name, price));
+                    } catch (NumberFormatException e) {
+                        System.out.println("Ошибка при чтении данных: " + e.getMessage());
+                    }
+                } else {
+                    System.out.println("Некорректные данные: " + line);
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Ошибка при чтении файла productList.csv: " + e.getMessage());
+        }
+    }
+
+
+    public static void writeUserToFile(List<User> listUser, String fileName) {
+        FileWriter fileWriter = null;
+        BufferedWriter bufferedWriter = null;
+        try {
+            fileWriter = new FileWriter(fileName);
+            bufferedWriter = new BufferedWriter(fileWriter);
+
+            User[] users = listUser.getAll();
+
+            for (int i = 0; i < listUser.getSize(); i++) {
+                bufferedWriter.write(users[i].getLogin() + "," + users[i].getPassword() + "\n");
+            }
+
+            bufferedWriter.flush();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void writeDataToFile(List<Product> listProduct, String fileName) {
+        FileWriter fileWriter = null;
+        BufferedWriter bufferedWriter = null;
+        try {
+            fileWriter = new FileWriter(fileName);
+            bufferedWriter = new BufferedWriter(fileWriter);
+
+            Product[] products = listProduct.getAll();
+
+            for (int i = 0; i < listProduct.getSize(); i++) {
+                bufferedWriter.write(products[i] + "\n");
+            }
+
+            bufferedWriter.flush();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 }

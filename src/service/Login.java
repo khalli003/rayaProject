@@ -9,9 +9,6 @@ public class Login {
     private static List<User> listUser;
     static Scanner scanner = new Scanner(System.in);
 
-    static String userLogin;
-    static String password;
-
     public Login(List<User> listUser) {
         this.listUser = listUser;
     }
@@ -28,10 +25,12 @@ public class Login {
 
     public static void registerUser(User user, List<User> users) {
         users.insert(user);
-        FileUtils.fileWriter(listUser,"src/user.scv");
+        FileUtils.writeUserToFile(listUser,"src/users.csv");
     }
 
-    public static void tryToRegisterUser() {
+    public static User tryToRegisterUser() {
+        String userLogin;
+        String password;
         String passwordCopy;
         boolean workFunctionsRegistration = true;
         while (workFunctionsRegistration) {
@@ -46,14 +45,16 @@ public class Login {
                 User user = new User(userLogin, password);
                 registerUser(user, listUser);
                 System.out.println("Спасибо, что выбираете нас, регистрация прошла успешно");
-                workFunctionsRegistration = false;
-                tryToAuthenticateUser();
+                return user;
             } else {
                 System.out.println("Пароли не совпадают. Повторите попытку.");
             }
         }
+        return null;
     }
     public static User tryToAuthenticateUser () {
+        String userLogin;
+        String password;
         System.out.print("Логин: ");
         userLogin = scanner.nextLine();
         System.out.print("Пароль: ");

@@ -1,8 +1,7 @@
 package entity;
 
-
-class Cart {
-    private entity.List<Product> products;
+public class Cart {
+    private List<Product> products;
 
     public Cart() {
         this.products = getProducts();

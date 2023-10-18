@@ -1,6 +1,6 @@
 package entity;
 
-class Product {
+public class  Product {
     private int id;
     private String name;
     private double price;
@@ -25,6 +25,6 @@ class Product {
 
     @Override
     public String toString() {
-        return "Product ID: " + id + ", Name: " + name + ", Price: " + price;
+        return "ID товара: " + id + ", Название: " + name + ", Цена: " + price;
     }
 }
