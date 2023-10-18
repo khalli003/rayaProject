@@ -1,11 +1,13 @@
 package Utils;
 
-import entity.Store;
-import entity.User;
+import entity.*;
 
 import java.util.Scanner;
 
 public class Menu {
+    private final static List<Cart> carts=new List<>(new Cart[10]);
+    private static List<Product> productList = new List<>(new  Product[10]);
+
 
 
     public static void printLoginMenu(){
@@ -31,10 +33,11 @@ public class Menu {
     }
 
     public static void appMenu(Scanner scanner, Store store, User user) {
+         FileUtils.readProductFile(productList);
+         Product product = new Product(1,"nameless",1.0);
         while (true) {
             printUserMenu();
             int choice = scanner.nextInt();
-            scanner.nextLine();
 
             switch (choice) {
                 case 1:
@@ -43,8 +46,14 @@ public class Menu {
                 case 2:
                     System.out.println("Введите ID товара:");
                     int productId = scanner.nextInt();
+                    Product selectedProduct=null;
+                    for (int i = 0; i < productList.getSize();i++){
+                        if (product.getId()==productId){
+                            selectedProduct = product;
+                        }
+                    }
                     scanner.nextLine();
-                    store.addProductToCart(user, productId);
+                    store.addProductToCart(selectedProduct);
                     break;
                 case 3:
                     System.out.println("Введите ID товара:");

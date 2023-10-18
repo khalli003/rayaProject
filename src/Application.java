@@ -5,13 +5,13 @@ import service.Login;
 
 import java.util.Scanner;
 
+
 public class Application {
 
     static List<User> users = new List<>(new User[10]);
 
-    static List<Cart> carts=new List<>(new Cart[10]);
+    static List<Cart> carts = new List<>(new Cart[10]);
 
-    static Store store = new Store(users, carts);
     public static final Login login = new Login(users);
 
 
@@ -44,7 +44,11 @@ public class Application {
             }
 
         }
-        Menu.appMenu(scanner, store, user);
+        if (user!=null) {
+            Store store = new Store(users, carts,user);
+
+            Menu.appMenu(scanner, store, user);
+        }
     }
 
 }

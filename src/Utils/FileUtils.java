@@ -47,7 +47,7 @@ public class FileUtils {
         }
     }
 
-    public static void readProductFile() {
+    public static void readProductFile(List<Product> products) {
         try (BufferedReader reader = new BufferedReader(new FileReader("src/productList.csv"))) {
             String line;
             boolean firstLine = true;
@@ -60,12 +60,12 @@ public class FileUtils {
                 }
 
                 String[] data = line.split(",");
-                if (data.length >= 3) { // Убедимся, что есть как минимум 3 элемента
+                if (data.length >= 3) {
                     try {
                         int id = Integer.parseInt(data[0]);
                         String name = data[1];
                         double price = Double.parseDouble(data[2]);
-                        Store.addProduct(new Product(id, name, price));
+                        Store.addProductToCart(new Product(id, name, price));
                     } catch (NumberFormatException e) {
                         System.out.println("Ошибка при чтении данных: " + e.getMessage());
                     }
@@ -98,7 +98,7 @@ public class FileUtils {
         }
     }
 
-    public static void writeDataToFile(List<Product> listProduct, String fileName) {
+    public static void writeProductToFile(List<Product> listProduct, String fileName) {
         FileWriter fileWriter = null;
         BufferedWriter bufferedWriter = null;
         try {
@@ -108,7 +108,7 @@ public class FileUtils {
             Product[] products = listProduct.getAll();
 
             for (int i = 0; i < listProduct.getSize(); i++) {
-                bufferedWriter.write(products[i] + "\n");
+                bufferedWriter.write(products[i].getId() + "," + products[i].getName() +"," + products[i].getPrice() + "\n");
             }
 
             bufferedWriter.flush();

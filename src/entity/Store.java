@@ -2,26 +2,23 @@ package entity;
 
 import Utils.FileUtils;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.util.Scanner;
-
 public class Store {
     private static List<Product> productList;
-    private List<User> users;
-    private List<Cart> carts;
-    private int lastOrderId;
+    private static List<User> users;
+    private static List<Cart> carts=new List<>(new Cart[10]);
 
-    public Store(List<User> users, List<Cart> carts) {
+    private static User currentUser;
+
+
+    public Store(List<User> users, List<Cart> carts, User user) {
         this.productList = new List<>(new Product[10]);
         this.users = users;
         this.carts = carts;
-        this.lastOrderId = 0;
-        FileUtils.readProductFile();
+        this.currentUser = user;
     }
 
-    public static void addProduct(Product product) {
-        productList.insert(product);
+    public void setCurrentUser(User user) {
+        this.currentUser = user;
     }
 
     public void printProductList() {
@@ -33,23 +30,26 @@ public class Store {
     }
 
 
-    public void addProductToCart(User user, int productId) {
-        for (int i = 0; i < productList.getSize(); i++) {
-            Product product = productList.getAll()[i];
-            if (product.getId() == productId) {
-                for (int j = 0; j < users.getSize(); j++) {
-                    if (users.getAll()[j] == user) {
-                        Cart cart = carts.getAll()[j];
-                        cart.addProduct(product);
-                        System.out.println("Товар добавлен в корзину.");
-                        return;
-                    }
+    public static void addProductToCart(Product product) {
+        if (currentUser != null) {
+            for (int i = 0; i < users.getSize(); i++) {
+                if (users.getAll()[i].equals(currentUser)) {
+                    Cart cart = carts.getAll()[i];
+                    cart.addProduct(product);
+                    System.out.println("Товар добавлен в корзину.");
+                    return;
                 }
             }
+        } else {
+            System.out.println("Пользователь не установлен. Выберите пользователя с помощью setCurrentUser.");
         }
-        System.out.println("Товар с указанным ID не найден.");
     }
 
+    public long generateUniqueOrderId() {
+        long keyOrderId = System.currentTimeMillis();
+        long orderId = keyOrderId / 1000000;
+        return orderId;
+    }
     public void removeProductFromCart(User user, int removeProductId) {
         for (int i = 0; i < users.getSize(); i++) {
             if (users.getAll()[i] == user) {
@@ -96,8 +96,7 @@ public class Store {
                     totalPrice += product.getPrice();
                 }
 
-                lastOrderId++;
-                System.out.println("Ваш заказ успешно оформлен под номером " + lastOrderId + ".");
+                System.out.println("Ваш заказ успешно оформлен под номером " + generateUniqueOrderId()  + ".");
                 System.out.println("Сумма заказа: " + totalPrice);
                 return;
             }

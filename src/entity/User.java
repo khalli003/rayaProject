@@ -32,6 +32,6 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("Человек с логином %s, пароль %s", login, password);
+        return String.format("Пользователь с логином %s, паролем %s", login, password);
     }
 }
