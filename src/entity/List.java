@@ -43,7 +43,10 @@ public class List<T> implements Iterable<T>, Serializable {
 
     public void print() {
         for (int i = 0; i < size; i++) {
-            System.out.println("Номер: " + i + " " + data[i]);
+            System.out.println(data[i]);
+        }
+        if (size==0){
+            System.out.println("Тут пока пусто");
         }
     }
 
