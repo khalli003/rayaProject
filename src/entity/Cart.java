@@ -15,7 +15,7 @@ public class Cart {
         for (Product product : productList) {
             if (product.getId() == productId) {
                 cart.addProduct(product);
-                System.out.println("Товар добавлен в корзину.");
+                System.out.println("Товар: " + product.getName() + " добавлен в корзину.");
                 return;
             }
         }

@@ -14,7 +14,7 @@ public class Application {
     static List<Order> orders = new List<>(new Order[10]);
 
     static List<Order> userOrders = new List<>(new Order[10]);
-    static Cart cart=new Cart();
+    static Cart cart = new Cart();
     public static final Login login = new Login(users);
 
 

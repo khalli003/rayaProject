@@ -9,7 +9,7 @@ public class Menu {
     public static void printLoginMenu(){
         System.out.println("""
                 Выберите действие:
-                1 Войди.
+                1 Войти.
                 2 Зарегистрироваться.
                 3 Выход.
                 """);
@@ -38,6 +38,7 @@ public class Menu {
                 1. Добавить товар в заказ
                 2. Удалить товар из заказа
                 3. Удалить заказ
+                4.Вернуться к преведущему меню
                 """);
     }
 
@@ -111,8 +112,10 @@ public class Menu {
                     return;
                 default:
                     System.out.println("Неправильный выбор, попробуйте снова.");
-
             }
+            System.out.println("Нажмите Enter, чтобы продолжить");
+            scanner.nextLine();
+            scanner.nextLine();
         }
     }
     public static void redactOrderMenu(Scanner scanner, List<Product> productList,List <Order> userOrders) {
