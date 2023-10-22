@@ -22,7 +22,7 @@ public class Cart {
         System.out.println("Товар с указанным ID не найден.");
     }
 
-    public void removeProductFromCart(User user, int removeProductId,Cart cart) {
+    public void removeProductFromCart(int removeProductId,Cart cart) {
                 for (int i = 0; i < cart.getProducts().getSize(); i++) {
                     Product product = cart.getProducts().getAll()[i];
                     if (product.getId() == removeProductId) {

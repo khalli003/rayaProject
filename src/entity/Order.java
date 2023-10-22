@@ -2,6 +2,9 @@ package entity;
 
 import Utils.FileUtils;
 
+import java.util.Random;
+import java.util.Scanner;
+
 public class Order {
         private int orderId;
         private String userLogin;
@@ -37,8 +40,10 @@ public class Order {
     }
 
     public static int generateUniqueOrderId() {
-        long keyOrderId = System.currentTimeMillis();
-        int orderId = (int) (keyOrderId / 100000000);
+        Random random = new Random();
+        int min = 50;
+        int step = 50;
+        int orderId = min + step * random.nextInt(50);
         return orderId;
     }
 
@@ -74,5 +79,48 @@ public class Order {
         System.out.println("Ваш заказ успешно оформлен под номером " + orderId + ".");
         System.out.println("Сумма заказа: " + order.getTotalPrice());
         orders.insert(order);
+    }
+
+    public static Order findOrderById(int orderId,List<Order> orders) {
+        for (Order order : orders) {
+            if (order.getOrderId() == orderId) {
+                return order;
+            }
+        }
+        return null;
+    }
+
+    public static List <Order> removeOrder(int orderId, List<Order> orders) {
+        for (Order order : orders) {
+            if (order.getOrderId() == orderId) {
+                orders.remove(order);
+                System.out.println("Заказ успешно удалён");
+                return orders;
+            }
+        }
+        System.out.println("Заказ с таким ID не найдён");
+        return orders;
+    }
+
+    public static void removeProductFromOrder(int removeProductId, Cart cart,List<Product> productList) {
+        for (Product product : productList) {
+            if (product.getId() == removeProductId) {
+                cart.removeProduct(product);
+                System.out.println("Товар удален из заказа.");
+                return;
+            }
+        }
+        System.out.println("Товар с указанным ID не найден.");
+    }
+
+    public static void addProductToOrder(int productId, Cart cartInOrder, List<Product> productList) {
+        for (Product product : productList) {
+            if (product.getId() == productId) {
+                cartInOrder.addProduct(product);
+                System.out.println("Товар добавлен в заказ.");
+                return;
+            }
+        }
+        System.out.println("Товар с указанным ID не найден.");
     }
 }
